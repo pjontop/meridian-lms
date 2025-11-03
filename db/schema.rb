@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_03_012550) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_03_024728) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -31,17 +31,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_03_012550) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "organizations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name"
-    t.string "slug"
-    t.string "subdomain"
-    t.jsonb "settings"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["slug"], name: "index_organizations_on_slug", unique: true
-    t.index ["subdomain"], name: "index_organizations_on_subdomain", unique: true
-  end
-
   create_table "sessions", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "ip_address"
@@ -49,10 +38,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_03_012550) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_sessions_on_user_id"
-  end
-
-  create_table "test_users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name"
   end
 
   create_table "users", force: :cascade do |t|
