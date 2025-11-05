@@ -8,6 +8,7 @@ class ClassroomsController < ApplicationController
 
   # GET /classrooms/1 or /classrooms/1.json
   def show
+    @announcements = @classroom.announcements
   end
 
   # GET /classrooms/new
