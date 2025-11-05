@@ -1,0 +1,28 @@
+{
+  "name": "meridian-lms",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pjontop/meridian-lms.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/pjontop/meridian-lms/issues"
+  },
+  "homepage": "https://github.com/pjontop/meridian-lms#readme",
+  "dependencies": {
+    "daisyui": "^5.4.4"
+  }
+}
