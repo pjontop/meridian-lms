@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/pjontop/meridian-lms#readme",
   "dependencies": {
+    "@floating-ui/dom": "^1.7.4",
     "daisyui": "^5.4.4"
   }
 }

@@ -5,25 +5,103 @@
     <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
   <% end %>
 
-  <div class="flex justify-between items-center">
+  <div class="flex justify-between items-center mb-6">
     <h1 class="font-bold text-4xl">Classrooms</h1>
-    <%= link_to "New classroom", new_classroom_path, class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white block font-medium" %>
+    <% if current_user_can_manage? %>
+      <%= link_to new_classroom_path, class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-flex items-center gap-2 font-medium transition-colors" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+        </svg>
+        New Classroom
+      <% end %>
+    <% end %>
   </div>
 
-  <div id="classrooms" class="min-w-full divide-y divide-gray-200 space-y-5">
+  <div id="classrooms">
     <% if @classrooms.any? %>
-      <% @classrooms.each do |classroom| %>
-        <div class="flex flex-col sm:flex-row justify-between items-center pb-5 sm:pb-0">
-          <%= render classroom %>
-          <div class="w-full sm:w-auto flex flex-col sm:flex-row space-x-2 space-y-2">
-            <%= link_to "Show", classroom, class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-            <%= link_to "Edit", edit_classroom_path(classroom), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-            <%= button_to "Destroy", classroom, method: :delete, class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
-          </div>
-        </div>
-      <% end %>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <% @classrooms.each do |classroom| %>
+          <% cache classroom do %>
+            <%= link_to classroom_path(classroom), class: "block group" do %>
+            <div class="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-all duration-200 hover:border-blue-300 relative">
+              <!-- Header Image -->
+              <% if classroom.header_image.attached? %>
+                <div class="w-full h-40 overflow-hidden bg-gray-100">
+                  <%= image_tag classroom.header_image.variant(resize_to_fill: [600, 300]), 
+                      class: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-200" %>
+                </div>
+              <% else %>
+                <div class="w-full h-40 bg-gradient-to-br from-blue-400 to-blue-600"></div>
+              <% end %>
+              
+              <!-- Three Dots Menu - Only for Admins/Teachers -->
+              <% if current_user_can_manage? %>
+                <div class="absolute top-4 right-4 z-10" data-controller="dropdown" data-dropdown-open-class="block" data-dropdown-close-class="hidden">
+                <button type="button" 
+                        class="p-2 rounded-lg bg-white/90 backdrop-blur-sm text-gray-700 hover:bg-white hover:text-gray-900 transition-colors shadow-sm"
+                        data-action="click->dropdown#toggle:stop"
+                        aria-label="Options">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <circle cx="12" cy="6" r="2"/>
+                    <circle cx="12" cy="12" r="2"/>
+                    <circle cx="12" cy="18" r="2"/>
+                  </svg>
+                </button>
+                
+                <!-- Dropdown Menu -->
+                <div class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-20"
+                     data-dropdown-target="menu"
+                     data-action="click:stop">
+                  <%= link_to edit_classroom_path(classroom), 
+                      class: "flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors" do %>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                    Edit Classroom
+                  <% end %>
+                  <%= button_to classroom_path(classroom), 
+                      method: :delete,
+                      data: { turbo_confirm: "Are you sure you want to delete this classroom?" },
+                      class: "flex items-center gap-3 w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors" do %>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                    Delete Classroom
+                  <% end %>
+                </div>
+              </div>
+              <% end %>
+
+              <!-- Card Content -->
+              <div class="p-6">
+                <h2 class="font-bold text-xl text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                  <%= classroom.name %>
+                </h2>
+                <p class="text-gray-600 text-sm line-clamp-3">
+                  <%= classroom.description || "No description available" %>
+                </p>
+                
+                <!-- Card Footer -->
+                <div class="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
+                  <span>Created <%= time_ago_in_words(classroom.created_at) %> ago</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-400 group-hover:text-blue-600 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          <% end %>
+          <% end %>
+        <% end %>
+      </div>
     <% else %>
-      <p class="text-center my-10">No classrooms found.</p>
+      <div class="text-center py-12">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+        </svg>
+        <p class="text-gray-500 text-lg mb-4">No classrooms found</p>
+        <%= link_to "Create your first classroom", new_classroom_path, class: "rounded-md px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium" %>
+      </div>
     <% end %>
   </div>
 </div>

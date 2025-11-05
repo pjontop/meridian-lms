@@ -1,14 +1,23 @@
 class ClassroomsController < ApplicationController
+  include Authorization
+  
   before_action :set_classroom, only: %i[ show edit update destroy ]
+  before_action :require_management_permission, only: %i[ new create edit update destroy ]
 
   # GET /classrooms or /classrooms.json
   def index
     @classrooms = Classroom.all
+    
+    # Conditional GET support for the collection
+    fresh_when(@classrooms)
   end
 
   # GET /classrooms/1 or /classrooms/1.json
   def show
     @announcements = @classroom.announcements
+    
+    # Conditional GET support - returns 304 Not Modified if unchanged
+    fresh_when(@classroom)
   end
 
   # GET /classrooms/new
@@ -66,6 +75,6 @@ class ClassroomsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def classroom_params
-      params.expect(classroom: [ :name, :description ])
+      params.expect(classroom: [ :name, :description, :header_image ])
     end
 end

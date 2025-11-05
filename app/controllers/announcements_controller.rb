@@ -1,5 +1,8 @@
 class AnnouncementsController < ApplicationController
+  include Authorization
+  
   before_action :set_announcement, only: [:destroy]
+  before_action :require_management_permission, only: [:new, :create, :destroy]
 
   def new     
     @classroom = Classroom.find(params[:classroom_id])

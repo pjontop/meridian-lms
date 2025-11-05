@@ -12,13 +12,24 @@
   <% end %>
 
   <div class="my-5">
-    <%= form.label :name %>
-    <%= form.text_field :name, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": classroom.errors[:name].none?, "border-red-400 focus:outline-red-600": classroom.errors[:name].any?}] %>
+    <%= form.label :name, class: "block font-medium text-gray-700 mb-2" %>
+    <%= form.text_field :name, class: "block shadow-sm rounded-md border border-gray-300 focus:border-blue-500 focus:ring-blue-500 px-3 py-2 w-full" %>
   </div>
 
   <div class="my-5">
-    <%= form.label :description %>
-    <%= form.textarea :description, rows: 4, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": classroom.errors[:description].none?, "border-red-400 focus:outline-red-600": classroom.errors[:description].any?}] %>
+    <%= form.label :description, class: "block font-medium text-gray-700 mb-2" %>
+    <%= form.textarea :description, rows: 4, class: "block shadow-sm rounded-md border border-gray-300 focus:border-blue-500 focus:ring-blue-500 px-3 py-2 w-full" %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :header_image, "Header Image", class: "block font-medium text-gray-700 mb-2" %>
+    <% if classroom.header_image.attached? %>
+      <div class="mb-3">
+        <%= image_tag classroom.header_image.variant(resize_to_limit: [800, 400]), class: "rounded-lg border border-gray-300 max-w-full h-auto" %>
+      </div>
+    <% end %>
+    <%= form.file_field :header_image, accept: "image/*", class: "block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" %>
+    <p class="mt-1 text-sm text-gray-500">PNG, JPG, GIF up to 10MB</p>
   </div>
 
   <div class="inline">
