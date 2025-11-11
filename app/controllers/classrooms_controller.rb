@@ -6,7 +6,7 @@ class ClassroomsController < ApplicationController
 
   # GET /classrooms or /classrooms.json
   def index
-    @classrooms = Classroom.all
+    @classrooms = Classroom.includes(header_image_attachment: :blob).all
     
     # Conditional GET support for the collection
     fresh_when(@classrooms)
@@ -14,9 +14,10 @@ class ClassroomsController < ApplicationController
 
   # GET /classrooms/1 or /classrooms/1.json
   def show
-    @announcements = @classroom.announcements
+    @announcements = @classroom.announcements.with_rich_text_content
     
     # Conditional GET support - returns 304 Not Modified if unchanged
+    # Use classroom's updated_at which gets touched when announcements change
     fresh_when(@classroom)
   end
 

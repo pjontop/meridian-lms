@@ -1,9 +1,16 @@
 <% content_for :title, "New classroom" %>
 
-<div class="md:w-2/3 w-full">
-  <h1 class="font-bold text-4xl">New classroom</h1>
-  
-  <%= render "form", classroom: @classroom %>
+<div class="max-w-4xl mx-auto px-4 py-8">
+  <div class="mb-8">
+    <h1 class="text-4xl font-bold text-neutral-900 mb-2" style="font-family: 'Expensify New Kansas', serif;">
+      Create a New Classroom
+    </h1>
+    <p class="text-lg text-neutral-600" style="font-family: 'TT Commons Pro Variable', system-ui, sans-serif;">
+      Set up a new space for your students to learn and grow
+    </p>
+  </div>
 
-  <%= link_to "Back to classrooms", classrooms_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+  <div class="bg-white rounded-[30px] border-2 border-black p-8 shadow-lg animate-fade-in">
+    <%= render "form", classroom: @classroom %>
+  </div>
 </div>

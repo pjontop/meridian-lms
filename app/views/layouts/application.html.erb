@@ -22,7 +22,10 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="h-screen overflow-hidden">
+<body class="h-screen overflow-hidden">
+  <% unless controller_name == "sessions" && action_name == "new" %>
     <%= render "shared/sidebar" %>
-  </body>
+  <% end %>
+  <%= yield %>
+</body>
 </html>

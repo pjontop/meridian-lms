@@ -4,8 +4,23 @@ class User < ApplicationRecord
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 
-  # Role enum: student (0), teacher (1), admin (2)
-  enum :role, { student: 0, teacher: 1, admin: 2 }, default: :student
+  # Valid roles
+  ROLES = %w[student teacher admin].freeze
+  
+  validates :role, inclusion: { in: ROLES }
+  
+  # Role helper methods
+  def student?
+    role == "student"
+  end
+  
+  def teacher?
+    role == "teacher"
+  end
+  
+  def admin?
+    role == "admin"
+  end
 
   # Check if user can manage content (admin or teacher)
   def can_manage?

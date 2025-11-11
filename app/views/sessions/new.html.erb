@@ -1,31 +1,99 @@
-<div class="mx-auto md:w-2/3 w-full">
-  <% if alert = flash[:alert] %>
-    <p class="py-2 px-3 bg-red-50 mb-5 text-red-500 font-medium rounded-lg inline-block" id="alert"><%= alert %></p>
-  <% end %>
-
-  <% if notice = flash[:notice] %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
-  <% end %>
-
-  <h1 class="font-bold text-4xl">Sign in</h1>
-
-  <%= form_with url: session_url, class: "contents" do |form| %>
-    <div class="my-5">
-      <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address], class: "block shadow-sm rounded-md border border-gray-400 focus:outline-blue-600 px-3 py-2 mt-2 w-full" %>
-    </div>
-
-    <div class="my-5">
-      <%= form.password_field :password, required: true, autocomplete: "current-password", placeholder: "Enter your password", maxlength: 72, class: "block shadow-sm rounded-md border border-gray-400 focus:outline-blue-600 px-3 py-2 mt-2 w-full" %>
-    </div>
-
-    <div class="col-span-6 sm:flex sm:items-center sm:gap-4">
-      <div class="inline">
-        <%= form.submit "Sign in", class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
+<div class="min-h-screen w-full bg-white flex items-center justify-center p-4 md:p-6">
+  <div class="w-full mx-auto" style="max-width: 687px;">
+    <div class="bg-orange-50 rounded-3xl border-2 border-stone-200 p-6 md:p-12 lg:p-16 flex flex-col h-full">
+      <!-- Logo -->
+      <div class="mb-8 md:mb-12">
+        <%= link_to classrooms_path do %>
+          <%= image_tag "logo.svg", class: "h-10 w-auto" %>
+        <% end %>
       </div>
 
-      <div class="mt-4 text-sm text-gray-500 sm:mt-0">
-        <%= link_to "Forgot password?", new_password_path, class: "text-gray-700 underline hover:no-underline" %>
+      <!-- Welcome Text -->
+      <h1 class="text-3xl md:text-4xl lg:text-5xl font-medium mb-6 md:mb-8 font-['Expensify_New_Kansas']">
+        Welcome to MeridianLMS
+      </h1>
+
+      <!-- Subtitle -->
+      <p class="text-base md:text-lg mb-8 md:mb-12 max-w-md font-['TTCommonsProVariable']">
+        The open source AI-Powered Learning Management System for students, by students
+      </p>
+
+      <!-- Flash Messages -->
+      <% if flash[:alert] %>
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-2xl mb-4" role="alert">
+          <span class="block sm:inline"><%= flash[:alert] %></span>
+        </div>
+      <% end %>
+      <% if flash[:notice] %>
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-2xl mb-4" role="alert">
+          <span class="block sm:inline"><%= flash[:notice] %></span>
+        </div>
+      <% end %>
+
+      <!-- Login Form -->
+      <%= form_with(url: session_path, method: :post, local: true, class: "w-full") do |form| %>
+        <!-- Email Input -->
+        <div class="relative mb-4 md:mb-6">
+          <div class="bg-white rounded-full border-[1.5px] border-black px-6 py-4 flex items-center">
+            <%= image_tag "icons/mail.svg", class: "w-6 h-6 text-black flex-shrink-0" %>
+            <div class="w-px h-6 bg-black mx-4 rounded-full"></div>
+            <%= form.email_field :email_address, 
+                placeholder: "Email Address", 
+                required: true,
+                autofocus: true,
+                autocomplete: "email",
+                class: "flex-1 bg-transparent outline-none text-base font-['TTCommonsProVariable']" %>
+          </div>
+        </div>
+
+        <!-- Password Input -->
+        <div class="relative mb-6 md:mb-8">
+          <div class="bg-white rounded-full border-[1.5px] border-black px-6 py-4 flex items-center">
+            <%= image_tag "icons/lock.svg", class: "w-6 h-6 text-black flex-shrink-0" %>
+            <div class="w-px h-6 bg-black mx-4 rounded-full"></div>
+            <%= form.password_field :password, 
+                placeholder: "Password", 
+                required: true,
+                autocomplete: "current-password",
+                class: "flex-1 bg-transparent outline-none text-base font-['TTCommonsProVariable']" %>
+          </div>
+        </div>
+
+        <!-- Remember Me (Optional) -->
+        <div class="flex items-center mb-6 md:mb-8">
+          <%= form.check_box :remember_me, class: "w-4 h-4 text-rose-500 border-gray-300 rounded focus:ring-rose-500" %>
+          <%= form.label :remember_me, "Remember me", class: "ml-2 text-sm text-gray-700 font-['TTCommonsProVariable']" %>
+        </div>
+
+        <!-- Sign In Button -->
+        <%= form.submit "Sign in", class: "w-full bg-rose-500 rounded-full border-[1.5px] border-rose-500 px-6 py-4 mb-6 md:mb-8 hover:bg-rose-600 transition-colors text-white text-base font-semibold font-['TT_Commons_Pro_DemiBold'] cursor-pointer" %>
+      <% end %>
+
+      <!-- Divider -->
+      <div class="flex items-center gap-4 mb-6 md:mb-8">
+        <div class="flex-1 h-px bg-black"></div>
+        <span class="text-base font-['TTCommonsProVariable']">or</span>
+        <div class="flex-1 h-px bg-black"></div>
       </div>
+
+      <!-- Passkey Button (if implemented) -->
+      <% if defined?(passkey_authentication_path) %>
+        <%= link_to passkey_authentication_path, class: "bg-orange-50 rounded-full border-[1.5px] border-black px-6 py-4 mb-6 md:mb-8 hover:bg-orange-100 transition-colors flex items-center justify-center gap-2 no-underline" do %>
+          <%= image_tag "icons/key-round.svg", class: "w-6 h-6 text-black" %>
+          <span class="text-black text-base font-semibold font-['TT_Commons_Pro_DemiBold']">Sign in with Passkey</span>
+        <% end %>
+      <% end %>
+
+      <!-- Contact Link -->
+      <p class="text-center text-base font-['TTCommonsProVariable']">
+        Don't have an account? 
+        <%= link_to "Contact Us", classrooms_path, class: "text-rose-500 font-semibold font-['TT_Commons_Pro_DemiBold'] hover:underline" %>
+      </p>
+
+      <!-- Forgot Password (Optional) -->
+      <p class="text-center text-sm mt-4 font-['TTCommonsProVariable']">
+        <%= link_to "Forgot your password?", classrooms_path, class: "text-gray-600 hover:text-gray-800 hover:underline" %>
+      </p>
     </div>
-  <% end %>
+  </div>
 </div>

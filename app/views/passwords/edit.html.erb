@@ -1,21 +1,45 @@
-<div class="mx-auto md:w-2/3 w-full">
-  <% if alert = flash[:alert] %>
-    <p class="py-2 px-3 bg-red-50 mb-5 text-red-500 font-medium rounded-lg inline-block" id="alert"><%= alert %></p>
-  <% end %>
+<div class="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-neutral-50 via-accent-50 to-neutral-100">
+  <div class="w-full max-w-md">
+    <div class="bg-white rounded-[30px] border-2 border-black p-8 shadow-2xl animate-fade-in">
+      <% if alert = flash[:alert] %>
+        <div class="px-6 py-4 bg-red-50 border-2 border-red-200 text-red-800 rounded-[20px] mb-6">
+          <div class="flex items-start gap-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <div>
+              <%= alert %>
+            </div>
+          </div>
+        </div>
+      <% end %>
 
-  <h1 class="font-bold text-4xl">Update your password</h1>
+      <h1 class="text-4xl font-bold text-neutral-900 mb-2" style="font-family: 'Expensify New Kansas', serif;">
+        Update your password
+      </h1>
+      <p class="text-lg text-neutral-600 mb-8" style="font-family: 'TT Commons Pro Variable', system-ui, sans-serif;">
+        Choose a strong password to keep your account secure.
+      </p>
 
-  <%= form_with url: password_path(params[:token]), method: :put, class: "contents" do |form| %>
-    <div class="my-5">
-      <%= form.password_field :password, required: true, autocomplete: "new-password", placeholder: "Enter new password", maxlength: 72, class: "block shadow-sm rounded-md border border-gray-400 focus:outline-solid focus:outline-blue-600 px-3 py-2 mt-2 w-full" %>
+      <%= form_with url: password_path(params[:token]), method: :put, class: "space-y-4" do |form| %>
+        <div class="bg-white rounded-full border-[1.5px] border-black px-6 py-4 flex items-center gap-4 focus-within:border-primary-500 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-neutral-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          </svg>
+          <div class="w-px h-6 bg-neutral-200"></div>
+          <%= form.password_field :password, required: true, autocomplete: "new-password", placeholder: "New Password", maxlength: 72, class: "flex-1 bg-transparent outline-none text-base", style: "font-family: 'TT Commons Pro Variable', system-ui, sans-serif;" %>
+        </div>
+
+        <div class="bg-white rounded-full border-[1.5px] border-black px-6 py-4 flex items-center gap-4 focus-within:border-primary-500 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-neutral-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          </svg>
+          <div class="w-px h-6 bg-neutral-200"></div>
+          <%= form.password_field :password_confirmation, required: true, autocomplete: "new-password", placeholder: "Confirm Password", maxlength: 72, class: "flex-1 bg-transparent outline-none text-base", style: "font-family: 'TT Commons Pro Variable', system-ui, sans-serif;" %>
+        </div>
+
+        <%= form.submit "Update Password", class: "w-full px-8 py-4 bg-primary-500 hover:bg-primary-600 text-white rounded-full border-[1.5px] border-primary-500 transition-all duration-200 hover:shadow-lg hover:scale-105 font-semibold cursor-pointer mt-6" %>
+      <% end %>
     </div>
-
-    <div class="my-5">
-      <%= form.password_field :password_confirmation, required: true, autocomplete: "new-password", placeholder: "Repeat new password", maxlength: 72, class: "block shadow-sm rounded-md border border-gray-400 focus:outline-solid focus:outline-blue-600 px-3 py-2 mt-2 w-full" %>
-    </div>
-
-    <div class="inline">
-      <%= form.submit "Save", class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
-    </div>
-  <% end %>
+  </div>
 </div>
